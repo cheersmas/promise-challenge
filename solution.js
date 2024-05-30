@@ -6,33 +6,33 @@ let central = require("./central"),
   mark = require("./mark");
 
 // Solution hidden. Unfold this block to see it.
-module.exports = function(id) { // autofold
+module.exports = function (id) { // autofold
   let dbs = {
     db1: db1,
     db2: db2,
     db3: db3,
   };
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     Promise.all([
       central(id)
-        .catch(function() {
+        .catch(function () {
           return Promise.reject("Error central");
         })
-        .then(function(db) {
+        .then(function (db) {
           return dbs[db](id)
-            .catch(function() {
+            .catch(function () {
               return Promise.reject("Error " + db);
             });
         }),
 
       vault(id)
-        .catch(function() {
+        .catch(function () {
           return Promise.reject("Error vault");
         }),
     ])
-      .then(function(data) {
-        mark(id).catch(function() { });
+      .then(function (data) {
+        mark(id).catch(function () { });
 
         resolve({
           id: id,
@@ -43,7 +43,7 @@ module.exports = function(id) { // autofold
           email: data[1].email,
         });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         reject(error);
       });
   });
